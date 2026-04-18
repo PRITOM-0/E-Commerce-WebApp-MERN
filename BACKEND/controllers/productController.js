@@ -5,13 +5,18 @@ import Product from "../Models/Product.js";
 export const createProduct = async (req, res) => {
   try {
     const product = await Product.create(req.body);
+    if (!product) {
+      return res.status(400).json({
+        message: "Invalid product data !",
+      });
+    }
     res.status(200).json({
       message: "Product created successfully !",
       product,
     });
   } catch (error) {
     res.status(500).json({
-      message: "server Error",
+      message: "Invalid product data !",
       error,
     });
   }
