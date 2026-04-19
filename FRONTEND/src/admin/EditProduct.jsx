@@ -1,9 +1,12 @@
-import { useState } from "react";
+import React, { use } from "react";
+import { useState, useEffect } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
+import { useParams } from "react-router";
 
-const AddProduct = () => {
+const EditProduct = () => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -12,39 +15,34 @@ const AddProduct = () => {
     image: "",
     stock: "",
   });
-  const [msg, setMsg] = useState({
-    error: "",
-    success: "",
-  });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        const res = await api.get(`/products/${id}`);
+        setFormData(res.data.product);
+      } catch (err) {
+        setMsg({
+          error:
+            err.response?.data?.message ||
+            "An error occurred. Please try again.",
+          success: "",
+        });
+      }
+    };
+    loadProduct();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/products/add", formData);
-      setFormData({
-        title: "",
-        description: "",
-        price: "",
-        catagory: "",
-        image: "",
-        stock: "",
-      });
-      setMsg({ error: "", success: res.data.message });
+      const res = await api.put(`/products/update/${id}`, formData);
+      navigate("/admin/productList");
     } catch (err) {
-      setMsg({
-        error:
-          err.response?.data?.message || "An error occurred. Please try again.",
-        success: "",
-      });
-      setFormData({
-        title: "",
-        description: "",
-        price: "",
-        catagory: "",
-        image: "",
-        stock: "",
-      });
+      alert(
+        err.response?.data?.message || "An error occurred. Please try again.",
+      );
     }
   };
   const handleChange = (e) => {
@@ -67,26 +65,19 @@ const AddProduct = () => {
   };
   return (
     <>
-    
-      
       <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
           <div className="text-2xl text-center font-bold mb-6  bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition duration-200">
-        <Link to={"/admin/productList"}>View All Products</Link>
-      </div><hr />
+            <Link to={"/admin/productList"}>View All Products</Link>
+          </div>
+          <hr />
+          <div className="mb-4 w-50 mx-auto">
+            <img src={formData.image} alt={formData.title} />
+          </div>
           <h2 className="text-2xl font-bold mt-5 mb-6 text-center text-blue-500">
-            Add Product
+            Edit Product
           </h2>
-          {msg.error && (
-            <div className="mb-4 text-sm text-center text-red-500">
-              {msg.error}
-            </div>
-          )}
-          {msg.success && (
-            <div className="mb-4 text-sm text-center text-green-500">
-              {msg.success}
-            </div>
-          )}
+
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2" htmlFor="title">
@@ -182,7 +173,7 @@ const AddProduct = () => {
                 type="submit"
                 className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
               >
-                Add
+                Update
               </button>
             </div>
           </form>
@@ -192,4 +183,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

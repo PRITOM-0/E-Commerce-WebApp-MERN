@@ -47,37 +47,60 @@ const Login = () => {
 
 
   return ( <>
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center text-orange-500">
-            Login To Your Account
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 px-4">
+        <div className="bg-white/80 backdrop-blur-sm p-10 rounded-3xl shadow-2xl shadow-orange-100 w-full max-w-md border border-orange-100">
+
+          {/* Logo / Icon area */}
+          <div className="flex justify-center mb-6">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-200">
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+            </div>
+          </div>
+
+          <h2 className="text-3xl font-extrabold mb-1 text-center text-gray-900 tracking-tight">
+            Welcome back
           </h2>
+          <p className="text-center text-gray-400 text-sm mb-8">Login to your account to continue</p>
+
           {msg.error && (
-            <div className="mb-4 text-sm text-center text-red-500">{msg.error}</div>
+            <div className="mb-5 flex items-center gap-2.5 text-sm text-red-600 bg-red-50 border border-red-200 px-4 py-3 rounded-xl">
+              {msg.error}
+            </div>
           )}
           {msg.success && (
-            <div className="mb-4 text-sm text-center text-green-500">{msg.success}</div>
+            <div className="mb-5 flex items-center gap-2.5 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-3 rounded-xl">
+              <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clipRule="evenodd"/></svg>
+              {msg.success}
+            </div>
           )}
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="email">
-                Email
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="email">
+                Email address
               </label>
               <input
-                className="w-full px-3 py-2 border border-orange-700 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-xl text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400/50 focus:border-orange-400 focus:bg-white transition-all duration-200"
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange}
               />
             </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 mb-2" htmlFor="password">
-                Password
-              </label>
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-sm font-semibold text-gray-700" htmlFor="password">
+                  Password
+                </label>
+                <button type="button" className="text-xs text-orange-500 hover:text-orange-600 font-medium hover:underline underline-offset-2 transition-colors">
+                  Forgot password?
+                </button>
+              </div>
               <input
-                className="w-full px-3 py-2 border border-orange-700 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-xl text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400/50 focus:border-orange-400 focus:bg-white transition-all duration-200"
                 type="password"
                 name="password"
                 placeholder="Enter your password"
@@ -85,18 +108,20 @@ const Login = () => {
                 onChange={handleChange}
               />
             </div>
+
             <button
-              className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition duration-200"
+              className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all duration-200 active:scale-[0.98] mt-2 tracking-wide"
               type="submit"
             >
-              Login
+              Login →
             </button>
           </form>
-          <div className="mt-4 text-center">
-            <p className="text-gray-600">
+
+          <div className="mt-7 pt-6 border-t border-gray-100 text-center">
+            <p className="text-gray-500 text-sm">
               Don't have an account?{" "}
               <button
-                className="text-orange-500 hover:underline"
+                className="text-orange-500 hover:text-orange-600 font-semibold hover:underline underline-offset-2 transition-colors"
                 onClick={() => navigate("/signup")}
               >
                 Sign up
